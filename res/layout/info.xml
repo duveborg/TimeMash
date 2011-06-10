@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="5dp"
+    android:background="#ffffff">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+    
+
+	
+	
+<TextView 
+	android:id="@+id/headline"
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:text="Om applikationen"
+    android:textSize="16sp" 
+    android:textColor="#000000"
+    />
+    
+<TextView 
+	android:id="@+id/infotext"
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:text="@string/app_info"
+    android:textSize="12sp" 
+    android:textColor="#000000"
+    android:autoLink="web"
+    />
+    
+    
+<TextView 
+	android:id="@+id/headline"
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:text="Om mig"
+    android:textSize="16sp" 
+    android:paddingTop="10dp"
+    android:textColor="#000000"
+    />
+<TextView 
+	android:id="@+id/infotext"
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:text="@string/author_info"
+    android:textSize="12sp" 
+    android:textColor="#000000"
+    android:autoLink="web"
+    />
+    
+</LinearLayout>
+</ScrollView>

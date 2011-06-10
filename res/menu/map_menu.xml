@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item android:id="@+id/about"
+          android:title="Om" />
+    <item android:id="@+id/center"
+          android:title="Min position" />
+    <item android:id="@+id/maptype"
+          android:title="Kartlager" />
+    <item android:id="@+id/quit"
+          android:title="Avsluta" />
+</menu>

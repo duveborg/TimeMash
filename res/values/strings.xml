@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Tidsmaskinen</string>
+    <string name="no_connection">Ingen anslutning till nätet</string>
+    <string name="no_results">Inga träffar i området</string>
+    <string name="no_gps">Det finns ingen position</string>
+    <string name="map_key">07ufmceoWTImdVjruBvec94W0Gj7n3fYmBlLrZg</string>
+    <string name="app_info">Tanken är att man ska ta bilder med telefonen från samma ställe där ursprungsbilden togs. Det finns några tusen bilder spridda över hela landet. Alla bilder som laddas upp visas även på http://resitiden.appspot.com. Bilder/info hämtas från Riksantikvarieämbetets API ksamsök(ksamsok.se).  </string>
+    <string name="author_info">Appen är skapad av Martin Duveborg (duveborg@gmail.com).</string>
+</resources>
