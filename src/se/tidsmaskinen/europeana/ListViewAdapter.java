@@ -1,7 +1,7 @@
 package se.tidsmaskinen.europeana;
 
 import java.util.List;
-import se.tidsmaskinen.sok.DetailScreen;
+import se.tidsmaskinen.detail.DetailScreen;
 import se.android.R;
 import android.app.Activity;
 import android.content.Intent;

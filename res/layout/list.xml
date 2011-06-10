@@ -4,18 +4,8 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#aaaaaa"
+    android:background="#ffffff"
     >
-    
-	<ListView 
-		android:id="@+id/list"
-		android:layout_width="fill_parent"
-		android:layout_height="235dp"
-		android:minHeight="235dp"
-		android:drawSelectorOnTop="false"
-		android:background="#cccccc"
-		android:cacheColorHint="#ffffff"
-		/>
 		
 		<LinearLayout android:orientation="horizontal"
     android:background="@android:drawable/bottom_bar" android:paddingLeft="4.0dip"
@@ -27,7 +17,7 @@
 		android:stretchColumns="1" android:paddingLeft="5px" android:paddingTop="5px" android:paddingRight="5px">
 		<TableRow android:layout_width="fill_parent"
 			android:layout_height="45dp" android:orientation="vertical" android:gravity="bottom">
-			<ImageView android:id="@+id/previous"
+			<ImageView android:id="@+id/arrowPre"
 				android:layout_width="28dp"
 				android:layout_height="45dp"
 				android:paddingTop="8dp"
@@ -45,7 +35,7 @@
 			<Button android:id="@+id/submitButton"
 				android:text="Sök" android:layout_width="50dp"
 				android:layout_height="fill_parent" />
-			<ImageView android:id="@+id/next"
+			<ImageView android:id="@+id/arrowNext"
 				android:layout_width="28dp"
 				android:layout_height="45dp"
 				android:paddingTop="8dp"
@@ -57,55 +47,19 @@
 				android:src="@drawable/next"
 				/>
 		</TableRow>
-		</TableLayout>
 		
-</LinearLayout>
-
-
-	<LinearLayout android:orientation="horizontal"
+		<ListView 
+		android:id="@+id/list"
 		android:layout_width="fill_parent"
-		android:layout_height="45dp"
-		android:layout_alignParentBottom="true" 
-		android:gravity="bottom">
-        
-        <ImageView android:id="@+id/arrowPre"
-			android:layout_width="45dp"
-			android:layout_height="45dp"
-			android:scaleType="fitXY"
-			android:src="@drawable/pre"/>
-			
-			<LinearLayout android:orientation="vertical"
-				android:layout_width="230dp"
-				android:layout_height="45dp">
-			    
-				<TextView android:id="@+id/selection"
-    				android:layout_width="fill_parent" 
-    				android:layout_height="wrap_content" 
-    				android:text="Sida 1 av 21"
-    				android:textSize="10sp"
-    				android:paddingTop="10dp"
-    				android:textColor="#000000"
-    				android:gravity="center_horizontal"
-    				/>
-    				
-				<TextView android:id="@+id/total"
-    				android:layout_width="fill_parent" 
-    				android:layout_height="wrap_content" 
-    				android:text="4185 objekt"
-    				android:textSize="10sp" 
-    				android:textColor="#000000"
-    				android:gravity="center_horizontal"
-    				/>
-			
-			</LinearLayout>
-	
-	        <ImageView android:id="@+id/arrowNext"
-			android:layout_width="45dp"
-			android:layout_height="45dp"
-			android:scaleType="fitXY"
-			android:src="@drawable/next"/>
-			
-	</LinearLayout>
+		android:layout_height="325dp"
+		android:minHeight="325dp"
+		android:drawSelectorOnTop="false"
+		android:background="#ffffff"
+		android:cacheColorHint="#ffffff"
+		/>
+		</TableLayout>
+
+</LinearLayout>
 
 </RelativeLayout >
  

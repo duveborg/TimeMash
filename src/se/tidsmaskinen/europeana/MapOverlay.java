@@ -8,7 +8,7 @@ import android.graphics.drawable.Drawable;
 
 import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.OverlayItem;
-import se.tidsmaskinen.sok.DetailScreen;
+import se.tidsmaskinen.detail.DetailScreen;
 
 public class MapOverlay extends ItemizedOverlay<OverlayItem>
 {
