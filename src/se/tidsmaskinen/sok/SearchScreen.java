@@ -19,7 +19,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ResultScreen extends Activity 
+public class SearchScreen extends Activity 
 {	
 	private SearchServie service = SearchServie.getInstance();
 	private ProgressDialog mProgressDialog;
@@ -45,7 +45,7 @@ public class ResultScreen extends Activity
 				if (mPage > 1)
 				{
 					mPage --;
-		            mProgressDialog = new ProgressDialog(ResultScreen.this);
+		            mProgressDialog = new ProgressDialog(SearchScreen.this);
 		            mProgressDialog.setMessage("Laddar...");
 		            mProgressDialog.show();
 		            mProgressThread = new ProgressThread(handler);
@@ -63,7 +63,7 @@ public class ResultScreen extends Activity
 				if (mPage < service.getTotalPages())
 				{
 					mPage ++;
-					mProgressDialog = new ProgressDialog(ResultScreen.this);
+					mProgressDialog = new ProgressDialog(SearchScreen.this);
 					mProgressDialog.setMessage("Laddar...");
 					mProgressDialog.show();
 					mProgressThread = new ProgressThread(handler);

@@ -166,6 +166,10 @@ public class XMLPull extends BaseXMLParser {
 							{
 								currentMessage.setThumbnailURL(parser.nextText());
 							}
+							else if (name.equalsIgnoreCase("object")&&(prefix != null))
+							{
+								currentMessage.setImages(parser.nextText());
+							}
 							else if (name.equalsIgnoreCase("description")&&(prefix3 != null))
 							{
 								currentMessage.setDescription(parser.nextText());
