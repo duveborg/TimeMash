@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="horizontal"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:background="#ffffff">
+
+<ImageView android:id="@+id/thumbnail"
+	android:layout_width="80dp"
+	android:layout_height="80dp"
+	android:scaleType="fitCenter"
+	android:src="@drawable/no_image"
+	/>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content">
+	
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/headline"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    android:textSize="16sp"
+    android:textColor="#000000"
+    android:text="Headline - Obj 0105245"/>
+    
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingLeft="5dp">
+
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/description"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:textSize="12sp"
+    android:textColor="#000000"
+    android:text="Foto"/>
+</LinearLayout>
+    
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingLeft="5dp">
+
+</LinearLayout>
+
+</LinearLayout>
+
+</LinearLayout>
