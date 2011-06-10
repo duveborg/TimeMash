@@ -11,15 +11,6 @@
 	<uses-feature android:name="android.hardware.camera" />
 	<uses-feature android:name="android.hardware.camera.autofocus" />
 	
-	<!-- 
-	AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-	AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-	AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 
-	AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-	AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-	AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 
-	-->
-
     <uses-sdk android:minSdkVersion="8" />
 
 
@@ -52,6 +43,13 @@
         <activity 
         	android:name="se.tidsmaskinen.camera.CameraScreen"
             android:screenOrientation="portrait">    
+        </activity>
+        
+        <activity 
+        	android:label="@string/app_name" 
+        	android:name="se.tidsmaskinen.sok.SearchScreen"
+        	android:screenOrientation="portrait"
+        	>
         </activity>
         
         <activity 
