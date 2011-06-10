@@ -1,8 +1,8 @@
 package se.tidsmaskinen.europeana;
 
 import java.util.List;
-import com.kringlamobil.DetailScreen;
-import com.kringlamobil.R;
+import se.tidsmaskinen.sok.DetailScreen;
+import se.android.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.LayoutInflater;

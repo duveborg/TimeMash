@@ -12,6 +12,8 @@ public class SearchServie
 	static final String PAGE = "&startPage=";
 	static final String API_KEY = "&wskey=2Ey79FjnHsQ";
 	
+	public static volatile boolean searchCanceled = false;
+	
 	private String mQuery = "";
 	private int mTotalResults;
 	private List<ListItem> mItems;
@@ -93,7 +95,7 @@ public class SearchServie
 		
 		XMLPull xmlPull = new XMLPull(BASE_URL+SIZE+SELECTION_SIZE+API_KEY+mQuery);
 		*/
-		
+		searchCanceled = false;
 		Boolean isFirst = true;
 		
 	    if(query.length() != 0)
@@ -121,6 +123,10 @@ public class SearchServie
 		return 1;
 	}
 	
+	public void cancelSearch(){
+		searchCanceled = true;
+	}
+	
 	/**
 	 * Handles additional searching. Uses the saved query but adds 
 	 * other starting location
@@ -132,6 +138,8 @@ public class SearchServie
 		int startFrom = ((page-1)*SELECTION_SIZE)+1;
 		XMLPull xmlPull = new XMLPull(BASE_URL+SIZE+SELECTION_SIZE+API_KEY+FROM+startFrom+mQuery);
 		*/
+		searchCanceled = false;
+		
 		XMLPull xmlPull = new XMLPull(BASE_URL+mQuery+API_KEY+PAGE+page);
 		try 
 		{

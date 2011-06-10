@@ -7,9 +7,12 @@ import java.util.TimerTask;
 
 import se.android.R;
 import se.tidsmaskinen.intro.InfoScreen;
-import se.tidsmaskinen.ksamsok.ListItem;
-import se.tidsmaskinen.ksamsok.SearchServie;
+//import se.tidsmaskinen.ksamsok.ListItem;
+//import se.tidsmaskinen.ksamsok.SearchServie;
+import se.tidsmaskinen.europeana.ListItem;
+import se.tidsmaskinen.europeana.SearchServie;
 import se.tidsmaskinen.utils.ImageUtils;
+
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -213,7 +216,9 @@ public class MapScreen extends MapActivity  {
 		GeoPoint leftPoint = mMapView.getProjection().fromPixels(0, mMapView.getHeight()); 
 		GeoPoint rightPoint = mMapView.getProjection().fromPixels(mMapView.getWidth(), 0); 
 		    	
-		mCoordinates = "%22"+(leftPoint.getLongitudeE6()/1e6)+"+"+(leftPoint.getLatitudeE6()/1e6)+"+"+(rightPoint.getLongitudeE6()/1e6)+"+"+(rightPoint.getLatitudeE6()/1e6)+"%22";
+		//mCoordinates = "%22"+(leftPoint.getLongitudeE6()/1e6)+"+"+(leftPoint.getLatitudeE6()/1e6)+"+"+(rightPoint.getLongitudeE6()/1e6)+"+"+(rightPoint.getLatitudeE6()/1e6)+"%22";
+		mCoordinates = "enrichment_place_latitude%3A["+(leftPoint.getLatitudeE6()/1e6)+"+TO+"+(rightPoint.getLatitudeE6()/1e6)
+		  +"]+AND+enrichment_place_longitude%3A["+(leftPoint.getLongitudeE6()/1e6)+"+TO+"+(rightPoint.getLongitudeE6()/1e6)+"]";
 
 		mProgressDialog = ProgressDialog.show(MapScreen.this, "Vänta...", "Söker...", true , true, onSearchCancel);
 		mProgressDialog.show();
@@ -404,7 +409,7 @@ public class MapScreen extends MapActivity  {
         }
        
         public void run() {
-        	int gotData = SearchServie.getInstance().search(mCoordinates);
+        	int gotData = SearchServie.getInstance().search("",false,false,"","",mCoordinates);
         	mHandler.sendEmptyMessage(gotData);       	
         }
     }

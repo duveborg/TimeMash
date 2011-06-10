@@ -8,6 +8,30 @@
 package se.android;
 
 public final class R {
+    public static final class anim {
+        public static final int cycle_7=0x7f040000;
+        public static final int fade=0x7f040001;
+        public static final int hyperspace_in=0x7f040002;
+        public static final int hyperspace_out=0x7f040003;
+        public static final int layout_animation_row_left_slide=0x7f040004;
+        public static final int layout_animation_row_right_slide=0x7f040005;
+        public static final int layout_animation_table=0x7f040006;
+        public static final int layout_bottom_to_top_slide=0x7f040007;
+        public static final int layout_grid_fade=0x7f040008;
+        public static final int layout_grid_inverse_fade=0x7f040009;
+        public static final int layout_random_fade=0x7f04000a;
+        public static final int layout_wave_scale=0x7f04000b;
+        public static final int push_left_in=0x7f04000c;
+        public static final int push_left_out=0x7f04000d;
+        public static final int push_right_in=0x7f04000e;
+        public static final int push_up_in=0x7f04000f;
+        public static final int push_up_out=0x7f040010;
+        public static final int shake=0x7f040011;
+        public static final int slide_left=0x7f040012;
+        public static final int slide_right=0x7f040013;
+        public static final int slide_top_to_bottom=0x7f040014;
+        public static final int wave_scale=0x7f040015;
+    }
     public static final class attr {
     }
     public static final class drawable {
@@ -21,59 +45,70 @@ public final class R {
         public static final int red_ic_maps_indicator_current_position=0x7f020007;
     }
     public static final class id {
-        public static final int TextView01=0x7f060019;
-        public static final int about=0x7f06001f;
-        public static final int alias=0x7f06001e;
-        public static final int center=0x7f060020;
-        public static final int date=0x7f060006;
-        public static final int description=0x7f06000d;
-        public static final int detail_view=0x7f060001;
-        public static final int gallery=0x7f06000b;
-        public static final int gallery_wrapper_view=0x7f060009;
-        public static final int goToCameraBtn=0x7f06000c;
-        public static final int headline=0x7f060002;
-        public static final int image=0x7f060007;
-        public static final int infotext=0x7f060011;
-        public static final int linearLayout1=0x7f060012;
-        public static final int link=0x7f060010;
-        public static final int maptype=0x7f060021;
-        public static final int mapview=0x7f060018;
-        public static final int newimage=0x7f060004;
-        public static final int next=0x7f06001d;
-        public static final int no_images_text=0x7f060008;
-        public static final int organization=0x7f06000f;
-        public static final int place=0x7f06000e;
-        public static final int previous=0x7f06001a;
-        public static final int quit=0x7f060022;
-        public static final int scroll_view=0x7f060000;
-        public static final int search_btn=0x7f06001b;
-        public static final int textView1=0x7f060013;
-        public static final int textView2=0x7f060014;
-        public static final int textView3=0x7f060015;
-        public static final int textView4=0x7f060016;
-        public static final int textView5=0x7f060017;
-        public static final int today_txt=0x7f06000a;
-        public static final int updatePosition_btn=0x7f06001c;
-        public static final int uploadBtn=0x7f060005;
-        public static final int upload_view=0x7f060003;
+        public static final int TableLayout01=0x7f070019;
+        public static final int TextView01=0x7f070018;
+        public static final int about=0x7f070028;
+        public static final int alias=0x7f070027;
+        public static final int arrowNext=0x7f070022;
+        public static final int arrowPre=0x7f07001f;
+        public static final int center=0x7f070029;
+        public static final int date=0x7f070006;
+        public static final int description=0x7f07000d;
+        public static final int detail_view=0x7f070001;
+        public static final int gallery=0x7f07000b;
+        public static final int gallery_wrapper_view=0x7f070009;
+        public static final int goToCameraBtn=0x7f07000c;
+        public static final int headline=0x7f070002;
+        public static final int image=0x7f070007;
+        public static final int infotext=0x7f070011;
+        public static final int linearLayout1=0x7f070012;
+        public static final int link=0x7f070010;
+        public static final int list=0x7f07001e;
+        public static final int maptype=0x7f07002a;
+        public static final int mapview=0x7f070024;
+        public static final int newimage=0x7f070004;
+        public static final int next=0x7f07001d;
+        public static final int no_images_text=0x7f070008;
+        public static final int organization=0x7f07000f;
+        public static final int place=0x7f07000e;
+        public static final int previous=0x7f07001a;
+        public static final int quit=0x7f07002b;
+        public static final int scroll_view=0x7f070000;
+        public static final int search_btn=0x7f070025;
+        public static final int search_text=0x7f07001b;
+        public static final int selection=0x7f070020;
+        public static final int submitButton=0x7f07001c;
+        public static final int textView1=0x7f070013;
+        public static final int textView2=0x7f070014;
+        public static final int textView3=0x7f070015;
+        public static final int textView4=0x7f070016;
+        public static final int textView5=0x7f070017;
+        public static final int thumbnail=0x7f070023;
+        public static final int today_txt=0x7f07000a;
+        public static final int total=0x7f070021;
+        public static final int updatePosition_btn=0x7f070026;
+        public static final int uploadBtn=0x7f070005;
+        public static final int upload_view=0x7f070003;
     }
     public static final class layout {
         public static final int detail=0x7f030000;
         public static final int info=0x7f030001;
         public static final int intro=0x7f030002;
-        public static final int map=0x7f030003;
+        public static final int list=0x7f030003;
+        public static final int list_item=0x7f030004;
+        public static final int map=0x7f030005;
     }
     public static final class menu {
-        public static final int detail_menu=0x7f050000;
-        public static final int map_menu=0x7f050001;
+        public static final int detail_menu=0x7f060000;
+        public static final int map_menu=0x7f060001;
     }
     public static final class string {
-        public static final int app_info=0x7f040005;
-        public static final int app_name=0x7f040000;
-        public static final int author_info=0x7f040006;
-        public static final int map_key=0x7f040004;
-        public static final int no_connection=0x7f040001;
-        public static final int no_gps=0x7f040003;
-        public static final int no_results=0x7f040002;
+        public static final int app_info=0x7f050005;
+        public static final int app_name=0x7f050000;
+        public static final int author_info=0x7f050006;
+        public static final int map_key=0x7f050004;
+        public static final int no_connection=0x7f050001;
+        public static final int no_gps=0x7f050003;
+        public static final int no_results=0x7f050002;
     }
 }
