@@ -96,7 +96,8 @@ public class SearchServie
 		XMLPull xmlPull = new XMLPull(BASE_URL+SIZE+SELECTION_SIZE+API_KEY+mQuery);
 		*/
 		searchCanceled = false;
-		Boolean isFirst = true;
+		Boolean isFirst = true;		
+		mQuery = "";
 		
 	    if(query.length() != 0)
 		{	

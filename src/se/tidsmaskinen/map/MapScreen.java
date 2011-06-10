@@ -15,6 +15,7 @@ import se.tidsmaskinen.utils.ImageUtils;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
@@ -138,10 +139,10 @@ public class MapScreen extends MapActivity  {
 	
 	
     private void getPosition() {
-    	mLocationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
+    	mLocationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
  	    mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mGpsLocationListener);
  	    mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, mNetworkLocationListener);
-
+ 	    
  		mProgressDialog = ProgressDialog.show(MapScreen.this, "Vänta...", "Hämtar position...", true , true, onLocationCancel);
  		mProgressDialog.show();
  	    
@@ -448,8 +449,10 @@ public class MapScreen extends MapActivity  {
         	
         }
        
-
-		public void onProviderDisabled(String provider){}
+	    public void onProviderDisabled(String provider)
+	    {
+	    	updateWithNewLocation(null);
+	    }
 
 	    public void onProviderEnabled(String provider) {}
 
