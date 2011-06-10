@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
-	<classpathentry kind="lib" path="E:/Programmering/eclipseworkspace/Jarfiler/apache-mime4j-0.6.jar"/>
-	<classpathentry kind="lib" path="E:/Programmering/eclipseworkspace/Jarfiler/httpmime-4.0.1.jar"/>
+	<classpathentry kind="lib" path="D:/Users/jobol/Documents/Git/TimeMash/lib/apache-mime4j-0.6.jar"/>
+	<classpathentry kind="lib" path="D:/Users/jobol/Documents/Git/TimeMash/lib/httpmime-4.0.1.jar"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="output" path="bin"/>
