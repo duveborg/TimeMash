@@ -8,20 +8,23 @@ import java.util.List;
 
 import se.android.R;
 import se.tidsmaskinen.camera.CameraScreen;
-import se.tidsmaskinen.ksamsok.ListItem;
-import se.tidsmaskinen.ksamsok.SearchServie;
+import se.tidsmaskinen.europeana.ListItem;
+import se.tidsmaskinen.europeana.SearchServie;
 import se.tidsmaskinen.utils.ImageUtils;
 import se.tidsmaskinen.utils.Uploader;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -56,9 +59,14 @@ public class DetailScreen extends Activity
 	private boolean galleryLoaded = false;
 	private boolean mainImageLoaded = false;
 	
-	private String uploadedImageCoordinate;
+	private String uploadedImageLongitude;
+	private String uploadedImageLatitude;
 
 	
+	private LocationManager mLocationManager;
+	private final LocationListener mGpsLocationListener = new CustomLocationListener();
+	private final LocationListener mNetworkLocationListener = new CustomLocationListener();
+
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.detail_menu, menu);
@@ -80,7 +88,7 @@ public class DetailScreen extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.detail);
 		mID = getIntent().getIntExtra("Id", 0);
-        mProgressDialog =  ProgressDialog.show(DetailScreen.this, "Vänta...", "Hämtar bilder...", true , true, onProgressCancel);
+        mProgressDialog =  ProgressDialog.show(DetailScreen.this, "Wait...", "Downloading images...", true , true, onProgressCancel);
         imageDownloadThread = new ImageLoaderThread(imageLoaderHandler);
 		imageDownloadThread.start();
 		galleryScrollThread = new UpdateGalleryScrolLThread(imageScrollHandler);
@@ -91,6 +99,13 @@ public class DetailScreen extends Activity
 		@Override
 		public void onCancel(DialogInterface dialog) {
 			finish();
+		}
+	};
+	
+	private OnCancelListener onPositionCancel = new OnCancelListener() {
+		@Override
+		public void onCancel(DialogInterface dialog) {
+			stopLocationListening();
 		}
 	};
 	
@@ -109,8 +124,7 @@ public class DetailScreen extends Activity
     		View view = findViewById(R.id.upload_view);
     		view.setVisibility(View.VISIBLE);
 
-    		uploadedImageCoordinate = data.getExtras().getString("coordinate");
-    		
+    	
     		ImageView image = (ImageView) findViewById(R.id.newimage);
         	FileInputStream in = null;
         	try {
@@ -121,7 +135,7 @@ public class DetailScreen extends Activity
     	    	ScrollView mainScrollView = (ScrollView) findViewById(R.id.scroll_view);
     	    	mainScrollView.fullScroll(ScrollView.FOCUS_UP);
     	    	
-    	    	Toast.makeText(DetailScreen.this, "Tryck på \"Ladda upp bild\" om du vill spara bilen på resitiden.appspot.com", Toast.LENGTH_LONG).show();
+    	    	Toast.makeText(DetailScreen.this, "Press \"Upload image\" if you want to save your image at updateculture.appspot.com", Toast.LENGTH_LONG).show();
     	    	
     	    	
     	    	final SharedPreferences settings = getSharedPreferences(PRES_FILE, 0);
@@ -129,6 +143,8 @@ public class DetailScreen extends Activity
     	        if(alias.equals(NOT_CHOSEN)){
     	        	promtForAlias();
     	        }
+    	        
+    	    	
     	    	
     		} catch (Exception e) {
     			Log.e("TIDSMASKIN", e.getMessage());
@@ -144,12 +160,24 @@ public class DetailScreen extends Activity
     	}
     }
 	
+	private void stopLocationListening() {
+		if (mLocationManager != null)
+		{
+			mLocationManager.removeUpdates(mGpsLocationListener);
+			mLocationManager.removeUpdates(mNetworkLocationListener);
+		}
+	}
+	
+	private void startLocationListening(){
+ 	    mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mGpsLocationListener);
+ 	    mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, mNetworkLocationListener);
+	}
 	
 
 	
 	private static final String PRES_FILE = "prefsFile";
 	private static final String NOT_CHOSEN = "_notchosen";
-	private static final String DEFAULT_USER = "Anonym";
+	private static final String DEFAULT_USER = "Anonymous";
 	private static final String ALIAS_KEY = "alias";
 	
 	private void promtForAlias(){
@@ -159,8 +187,8 @@ public class DetailScreen extends Activity
 
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-		alert.setTitle("Välj alias");
-		alert.setMessage("Ditt alias sparas tillsammans med bilder du laddar upp");
+		alert.setTitle("Choose alias");
+		alert.setMessage("Your alias is saved with your uploaded image");
 
 		final EditText input = new EditText(this);
 		alert.setView(input);
@@ -175,7 +203,7 @@ public class DetailScreen extends Activity
 				}
 			}
 		});
-		alert.setNegativeButton("Avbryt", new DialogInterface.OnClickListener() {
+		alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
 				// Canceled.
 			}
@@ -193,9 +221,22 @@ public class DetailScreen extends Activity
         return alias;
 	}
 	
+	@Override
+	protected void onStop() 
+	{
+		stopLocationListening();
+		super.onStop();
+	}
+    
+	@Override
+	protected void onPause() {
+		stopLocationListening();
+		super.onPause();
+	}
+	
 	
 	private void uploadImage(){			
-    	mProgressDialog = ProgressDialog.show(DetailScreen.this, "Vänta...", "Laddar upp bild...", true , true, onUploadCancel);
+    	mProgressDialog = ProgressDialog.show(DetailScreen.this, "Wait...", "Uploading image...", true , true, onUploadCancel);
         mProgressDialog.show();
         
         uploadThread = new UploadThread(imageUploaderHandler);
@@ -235,7 +276,9 @@ public class DetailScreen extends Activity
         final Button uploadbutton = (Button) findViewById(R.id.uploadBtn);
         uploadbutton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            	uploadImage();
+            	mLocationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
+    	    	startLocationListening();
+    	        mProgressDialog =  ProgressDialog.show(DetailScreen.this, "Wait...", "Getting position...", true , true, onPositionCancel);
             }
         });
 		
@@ -251,13 +294,13 @@ public class DetailScreen extends Activity
         	image.setImageBitmap(BitmapFactory.decodeResource(this.getResources(), R.drawable.no_image));
         }
        
-        date.setText((item.getTimeLabel() == null ? "Okänt datum" : item.getTimeLabel())  + ":");
+        date.setText((item.getTimeLabel() == null ? "Unknown date" : item.getTimeLabel())  + ":");
 		headline.setText(item.getTitle());
 		description.setText(item.getDescription());
 		organization.setText(item.getOrganization());
 		place.setText(item.getPlaceLabel());
 		link.setMovementMethod(LinkMovementMethod.getInstance());
-		link.setText(Html.fromHtml("<a href=\"" +item.getLink() +"\">Länk till källa</a>"));
+		link.setText(Html.fromHtml("<a href=\"" +item.getLink().substring(0, item.getLink().indexOf(".srw?"))+".html" +"\">Link to source object</a>"));
 		 //Makes the view visible the first time it is displayed
 	}  
 	
@@ -273,10 +316,10 @@ public class DetailScreen extends Activity
         		galleryScrollThread.start();
 
         		mProgressDialog.dismiss();
-        		Toast.makeText(DetailScreen.this, "Bild uppladdad!", Toast.LENGTH_LONG).show();
+        		Toast.makeText(DetailScreen.this, "Image uploaded!", Toast.LENGTH_LONG).show();
 			} else {
 				mProgressDialog.dismiss();
-				Toast.makeText(DetailScreen.this, "Misslyckades med bilduppladdning", Toast.LENGTH_LONG).show();
+				Toast.makeText(DetailScreen.this, "Upload failed", Toast.LENGTH_LONG).show();
 			} 	
         }
     };
@@ -298,7 +341,7 @@ public class DetailScreen extends Activity
     	    Long newImageId = 0L;
         	try { 	    	
     	    	File image = getFileStreamPath(CameraScreen.TEMP_IMAGE_FILE_NAME);
-    	    	newImageId = Uploader.upload(image, getSavedAlias(), item.getXmlLink(), uploadedImageCoordinate);
+    	    	newImageId = Uploader.upload(image, getSavedAlias(), item, uploadedImageLongitude, uploadedImageLatitude);
     	    	result = 1;
         	//	ImageAdapter.addImageToCache(newImageId, image);
     		} catch (Exception e) {
@@ -326,7 +369,7 @@ public class DetailScreen extends Activity
     	    	v2.setVisibility(View.GONE);
     	    	if(mGalleryImageIds.size() > 1){
     	    		TextView today = (TextView) findViewById(R.id.today_txt);
-    	    		today.setText("Tidigare uppladdade bilder: ("+mGalleryImageIds.size()+" bilder, svep åt sidan för att visa alla) ");
+    	    		today.setText("Previously uploaded images: ("+mGalleryImageIds.size()+", swipe the screen to view all) ");
     	    	}
     	    } else {
     	    	View v = findViewById(R.id.no_images_text);
@@ -357,8 +400,8 @@ public class DetailScreen extends Activity
     		SearchServie service = SearchServie.getInstance();
     		List<ListItem> items = service.getItems();
     		final ListItem item = items.get(mID);
-    		mGalleryImageIds = Uploader.getImagesByUri(item.getXmlLink());
-    		Log.e("TIDSMASKIN", item.getXmlLink() + " has " + mGalleryImageIds.size() + " images");
+    		mGalleryImageIds = Uploader.getImagesByUri(item.getLink());
+    		Log.e("TIDSMASKIN", item.getLink() + " has " + mGalleryImageIds.size() + " images");
     		mHandler.sendEmptyMessage(1);
     	}
     }
@@ -404,5 +447,27 @@ public class DetailScreen extends Activity
 
         	mHandler.sendEmptyMessage(0);
         }
+    }
+    
+    private class CustomLocationListener implements LocationListener  {
+        @Override
+        public void onLocationChanged(Location location) 
+        {
+        	Log.i("TIDSMASKINEN","got new location: " + location);
+        
+   
+			uploadedImageLongitude = location.getLongitude() + "";
+			uploadedImageLatitude = location.getLatitude() + "";
+
+        	stopLocationListening();
+        	mProgressDialog.dismiss();
+        	uploadImage();
+        }
+
+		public void onProviderDisabled(String provider){}
+
+	    public void onProviderEnabled(String provider) {}
+
+	    public void onStatusChanged(String provider, int status, Bundle extras) {}	
     }
 }

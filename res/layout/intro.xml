@@ -5,57 +5,7 @@
     android:layout_width="fill_parent" 
     android:layout_height="fill_parent" 
     xmlns:android="http://schemas.android.com/apk/res/android" 
-    android:background="#FFF"
-    >
-       
-       
-        	 <TextView 
-        	 android:id="@+id/textView1" 
-        	 android:layout_width="fill_parent"
-        	 android:layout_height="wrap_content" 
-        	 android:gravity="center_horizontal"
-        	 android:text="Välkommen in i" android:layout_marginTop="70sp"></TextView>
-       
-   	
-             <TextView 
-        	 android:id="@+id/textView2" 
-        	 android:layout_width="fill_parent"
-        	 android:layout_height="wrap_content" 
-        	 android:gravity="center_horizontal"
-        	 android:text="TIDSMASKINEN"
-        	 android:textSize = "30sp" 
-        	 ></TextView>
-        
-
-   			
-        	 <TextView 
-        	 android:id="@+id/textView3" 
-        	 android:layout_width="fill_parent"
-        	 android:layout_height="wrap_content" 
-        	 android:gravity="center_horizontal"
-        	 android:text="Tryck meny -> 'Om' i kartvyn för mer information"
-			 android:layout_marginTop="20sp"
-        	 ></TextView>
-        	 
-        	 <TextView 
-        	 android:id="@+id/textView4" 
-        	 android:layout_width="fill_parent"
-        	 android:layout_height="wrap_content" 
-        	 android:gravity="center_horizontal"
-        	 android:text="http://resitiden.appspot.com"
-			 android:layout_marginTop="20sp"
-        	 ></TextView>
-        	 
-        	 
-        	 <TextView 
-        	 android:id="@+id/textView5" 
-        	 android:layout_width="fill_parent"
-        	 android:layout_height="wrap_content" 
-        	 android:gravity="center_horizontal"
-        	 android:text="Toucha skärmen för att börja"
-
-        	 android:layout_marginTop="20sp"></TextView>
-    
-        	 
+    android:background="@drawable/splash"
+    > 	 
     </LinearLayout>
 

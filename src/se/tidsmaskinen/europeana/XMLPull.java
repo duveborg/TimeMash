@@ -200,6 +200,10 @@ public class XMLPull extends BaseXMLParser {
 							{
 								currentMessage.setLink(parser.nextText());
 							}
+							else if (name.equalsIgnoreCase("creator")&&(prefix3 != null))
+							{
+								currentMessage.setByLine(parser.nextText());
+							}
 							
 							else if (name.equalsIgnoreCase("place_latitude")&&(prefix2 != null))
 							{

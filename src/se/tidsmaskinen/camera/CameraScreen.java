@@ -7,8 +7,8 @@ import java.io.IOException;
 import java.util.List;
 
 import se.android.R;
-import se.tidsmaskinen.ksamsok.ListItem;
-import se.tidsmaskinen.ksamsok.SearchServie;
+import se.tidsmaskinen.europeana.ListItem;
+import se.tidsmaskinen.europeana.SearchServie;
 import se.tidsmaskinen.utils.ImageUtils;
 import android.app.Activity;
 import android.content.Context;
@@ -53,11 +53,7 @@ public class CameraScreen extends Activity {
 	private int mRotation;
 	private OrientationEventListener mOrientationEventListener;
 
-	private LocationManager mLocationManager;
-	private final LocationListener mGpsLocationListener = new CustomLocationListener();
-	private final LocationListener mNetworkLocationListener = new CustomLocationListener();
-	private Location mCurrentLocation;
-	
+
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,8 +72,7 @@ public class CameraScreen extends Activity {
         });
         
         
-    	mLocationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
-    	startLocationListening();
+
         
       
         mPreview = new CameraPreview(this);
@@ -131,7 +126,7 @@ public class CameraScreen extends Activity {
     @Override
     public void onResume() {
     	super.onResume();
-    	startLocationListening();
+    	//startLocationListening();
       if (mOrientationEventListener.canDetectOrientation()){
     	  mOrientationEventListener.enable();
       } else {
@@ -142,19 +137,16 @@ public class CameraScreen extends Activity {
 	@Override
 	protected void onStop() 
 	{
-		stopLocationListening();
+		//stopLocationListening();
 		super.onStop();
 	}
     
-	private void stopLocationListening() {
-		mLocationManager.removeUpdates(mGpsLocationListener);
-		mLocationManager.removeUpdates(mNetworkLocationListener);
-	}
-	
-	private void startLocationListening(){
- 	    mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mGpsLocationListener);
- 	    mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, mNetworkLocationListener);
-	}
+	 @Override
+	    protected void onPause() {
+	      super.onPause();
+	      mOrientationEventListener.disable();
+	     // stopLocationListening();
+	    }
     
     
     private OnClickListener mCameraClickListener = new OnClickListener() {
@@ -167,12 +159,7 @@ public class CameraScreen extends Activity {
 		}
 	};
 
-    @Override
-    protected void onPause() {
-      super.onPause();
-      mOrientationEventListener.disable();
-      stopLocationListening();
-    }
+   
 
     Camera.PictureCallback mPictureCallback = new Camera.PictureCallback() {
 		public void onPictureTaken(byte[] imageData, Camera c) {
@@ -199,9 +186,10 @@ public class CameraScreen extends Activity {
 				}	
 				
 				Intent dataHolder = new Intent();
-				if(mCurrentLocation != null){
-					dataHolder.putExtra("coordinate", mCurrentLocation.getLatitude() + "," + mCurrentLocation.getLongitude());
-				}
+				//if(mCurrentLocation != null){
+					//dataHolder.putExtra("longitude", "" + mCurrentLocation.getLongitude());
+					//dataHolder.putExtra("latitude", "" + mCurrentLocation.getLatitude());
+				//}
 				setResult(RESULT_OK, dataHolder);
 				
 				finish();
@@ -211,81 +199,8 @@ public class CameraScreen extends Activity {
 	
 	
 	/** The location listener that handles all the changes in location */
-    private class CustomLocationListener implements LocationListener  {
-        @Override
-        public void onLocationChanged(Location location) 
-        {
-        	Log.i("TIDSMASKINEN","got new location: " + location);
-        	if(isBetterLocation(location, mCurrentLocation)){
-        		Log.i("TIDSMASKINEN", location + " is better then " + mCurrentLocation);
-        		mCurrentLocation = location;
-        	}
-        	
-        }
-        
-        private static final int TWO_MINUTES = 1000 * 60 * 2;
-
-        /** Determines whether one Location reading is better than the current Location fix
-          * @param location  The new Location that you want to evaluate
-          * @param currentBestLocation  The current Location fix, to which you want to compare the new one
-          */
-        protected boolean isBetterLocation(Location location, Location currentBestLocation) {
-            if (currentBestLocation == null) {
-                // A new location is always better than no location
-                return true;
-            }
-
-            // Check whether the new location fix is newer or older
-            long timeDelta = location.getTime() - currentBestLocation.getTime();
-            boolean isSignificantlyNewer = timeDelta > TWO_MINUTES;
-            boolean isSignificantlyOlder = timeDelta < -TWO_MINUTES;
-            boolean isNewer = timeDelta > 0;
-
-            // If it's been more than two minutes since the current location, use the new location
-            // because the user has likely moved
-            if (isSignificantlyNewer) {
-                return true;
-            // If the new location is more than two minutes older, it must be worse
-            } else if (isSignificantlyOlder) {
-                return false;
-            }
-
-            // Check whether the new location fix is more or less accurate
-            int accuracyDelta = (int) (location.getAccuracy() - currentBestLocation.getAccuracy());
-            boolean isLessAccurate = accuracyDelta > 0;
-            boolean isMoreAccurate = accuracyDelta < 0;
-            boolean isSignificantlyLessAccurate = accuracyDelta > 200;
-
-            // Check if the old and new location are from the same provider
-            boolean isFromSameProvider = isSameProvider(location.getProvider(),
-                    currentBestLocation.getProvider());
-
-            // Determine location quality using a combination of timeliness and accuracy
-            if (isMoreAccurate) {
-                return true;
-            } else if (isNewer && !isLessAccurate) {
-                return true;
-            } else if (isNewer && !isSignificantlyLessAccurate && isFromSameProvider) {
-                return true;
-            }
-            return false;
-        }
-
-        /** Checks whether two providers are the same */
-        private boolean isSameProvider(String provider1, String provider2) {
-            if (provider1 == null) {
-              return provider2 == null;
-            }
-            return provider1.equals(provider2);
-        }
-       
-
-		public void onProviderDisabled(String provider){}
-
-	    public void onProviderEnabled(String provider) {}
-
-	    public void onStatusChanged(String provider, int status, Bundle extras) {}	
-    }
+	
+   
 	
 	
 	private int getClosestRotation(int rotation) {
@@ -338,9 +253,9 @@ public class CameraScreen extends Activity {
 				Log.i("Tidsmaskin", "image.getWidth(): " + image.getWidth());
 	
 				if(widerThenHigher){
-					mOverlayImage = ImageUtils.modify(image, screenHeight, screenWidth , 90);
+					mOverlayImage = ImageUtils.modify(image, screenWidth ,screenHeight, 0);
 				} else {
-					mOverlayImage = ImageUtils.modify(image, screenWidth, screenHeight, 0);
+					mOverlayImage = ImageUtils.modify(image, screenHeight, screenWidth, 270);
 				}
 				
 				overlayImageDownloaded = true;

@@ -7,10 +7,12 @@ import java.util.TimerTask;
 
 import se.android.R;
 import se.tidsmaskinen.intro.InfoScreen;
+import se.tidsmaskinen.intro.IntroScreen;
 //import se.tidsmaskinen.ksamsok.ListItem;
 //import se.tidsmaskinen.ksamsok.SearchServie;
 import se.tidsmaskinen.europeana.ListItem;
 import se.tidsmaskinen.europeana.SearchServie;
+import se.tidsmaskinen.sok.SearchScreen;
 import se.tidsmaskinen.utils.ImageUtils;
 
 import android.app.AlertDialog;
@@ -34,6 +36,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -62,6 +66,7 @@ public class MapScreen extends MapActivity  {
 	private Location mCurrentLocation;
 	private Timer timeoutTimer;
 	
+	private String mQuery = "";
 	private int mPage = 1;
 	
 	private boolean isFirstLocationSearch = true;
@@ -86,10 +91,10 @@ public class MapScreen extends MapActivity  {
 	    mMapView.setBuiltInZoomControls(true);
 	    mMapView.setSatellite(false);
 	    	    
-	    //Center on Strömsund, Jämtland, Sweden
+	    //Center on Gdansk, Poland
         MapController mc = mMapView.getController();
-        mc.setCenter(new GeoPoint((int)(63.85*1e6), (int)(15.583333*1e6))); 
-        mc.setZoom(5);
+        mc.setCenter(new GeoPoint((int)(54.366667*1e6), (int)(18.633333*1e6))); 
+        mc.setZoom(3);
         
 	    mMapView.getOverlays().add(new Overlay() {});
 	    mMapView.getOverlays().add(new Overlay() {});
@@ -100,13 +105,16 @@ public class MapScreen extends MapActivity  {
 		next.setOnClickListener(onNextOrPrevClickListener);
 		previous.setOnClickListener(onNextOrPrevClickListener);
 		
-		Button b = (Button) findViewById(R.id.updatePosition_btn);
+		ImageButton b = (ImageButton) findViewById(R.id.updatePosition_btn);
 		b.setOnClickListener(positionBtnClickListener);
 		
-		Button b2 = (Button) findViewById(R.id.search_btn);
+		ImageButton b2 = (ImageButton) findViewById(R.id.search_btn);
 		b2.setOnClickListener(searchBtnClickListener);
 		
-	    getPosition();
+		ImageButton b3 = (ImageButton) findViewById(R.id.to_list);
+		b3.setOnClickListener(listBtnClickListener);
+		
+	    //getPosition();
     }
     
     private OnClickListener positionBtnClickListener = new OnClickListener() {
@@ -116,8 +124,27 @@ public class MapScreen extends MapActivity  {
     };
     
     private OnClickListener searchBtnClickListener = new OnClickListener() {
+        public void onClick(View v) 
+        {
+        	EditText searchText = (EditText) findViewById(R.id.search_text);
+			mQuery = searchText.getText().toString();
+			if(!"".equals(mQuery))
+			{
+				mQuery = "text:" +mQuery;
+			}
+			else
+			{
+				mQuery = "";
+			}
+			doSearch();
+        }
+    };
+    
+    private OnClickListener listBtnClickListener = new OnClickListener() {
         public void onClick(View v) {
-        	doSearch();
+    		Intent intent = new Intent();
+    		intent = new Intent(MapScreen.this, SearchScreen.class);
+    		startActivity(intent);
         }
     };
     
@@ -130,7 +157,7 @@ public class MapScreen extends MapActivity  {
 			else if( v == findViewById(R.id.previous)){
 				mPage --;
 			}
-			mProgressDialog = ProgressDialog.show(MapScreen.this, "Vänta...", "Hämtar sida " + mPage + " av " + SearchServie.getInstance().getTotalPages() + "...", true , true, onSearchCancel);
+			mProgressDialog = ProgressDialog.show(MapScreen.this, "Please wait...", "Retrieving page " + mPage + " of " + SearchServie.getInstance().getTotalPages() + "...", true , true, onSearchCancel);
 			mProgressDialog.show();
 			mProgressThread = new PageThread(handler);
 			mProgressThread.start();
@@ -143,7 +170,7 @@ public class MapScreen extends MapActivity  {
  	    mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mGpsLocationListener);
  	    mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, mNetworkLocationListener);
  	    
- 		mProgressDialog = ProgressDialog.show(MapScreen.this, "Vänta...", "Hämtar position...", true , true, onLocationCancel);
+ 		mProgressDialog = ProgressDialog.show(MapScreen.this, "Please wait...", "Fixing position...", true , true, onLocationCancel);
  		mProgressDialog.show();
  	    
  		// get last known location if it takes too long..
@@ -168,10 +195,10 @@ public class MapScreen extends MapActivity  {
 			return true;
 			
 		case R.id.maptype:
-			final CharSequence[] mapeTypes = {"Normal", "Satellit"};
+			final CharSequence[] mapeTypes = {"Normal", "Satellite"};
 
 			AlertDialog.Builder mapTypeBuilder = new AlertDialog.Builder(this);
-			mapTypeBuilder.setTitle("Välj typ av kartlager");
+			mapTypeBuilder.setTitle("Choose a type of map layers");
 			mapTypeBuilder.setItems(mapeTypes, new DialogInterface.OnClickListener() 
 			{
 			    public void onClick(DialogInterface dialog, int item) 
@@ -221,9 +248,8 @@ public class MapScreen extends MapActivity  {
 		mCoordinates = "enrichment_place_latitude%3A["+(leftPoint.getLatitudeE6()/1e6)+"+TO+"+(rightPoint.getLatitudeE6()/1e6)
 		  +"]+AND+enrichment_place_longitude%3A["+(leftPoint.getLongitudeE6()/1e6)+"+TO+"+(rightPoint.getLongitudeE6()/1e6)+"]";
 
-		mProgressDialog = ProgressDialog.show(MapScreen.this, "Vänta...", "Söker...", true , true, onSearchCancel);
+		mProgressDialog = ProgressDialog.show(MapScreen.this, "Please wait...", "Searching...", true , true, onSearchCancel);
 		mProgressDialog.show();
-	
 		
 		mProgressThread = new ProgressThread(handler);
 		mProgressThread.start();
@@ -282,10 +308,13 @@ public class MapScreen extends MapActivity  {
 	}
 
 	private void stopLocationListening() {
-		mLocationManager.removeUpdates(mGpsLocationListener);
-		mLocationManager.removeUpdates(mNetworkLocationListener);
-		if(timeoutTimer != null)
-			timeoutTimer.cancel();
+		if (mLocationManager != null)
+		{
+			mLocationManager.removeUpdates(mGpsLocationListener);
+			mLocationManager.removeUpdates(mNetworkLocationListener);
+			if(timeoutTimer != null)
+				timeoutTimer.cancel();
+		}
 	}
 	
 	/** 
@@ -323,7 +352,7 @@ public class MapScreen extends MapActivity  {
 	    }
 		
 		if (SearchServie.getInstance().getTotalPages() > 1){
-			Toast.makeText(getApplicationContext(), "Sida " + mPage + " av " + SearchServie.getInstance().getTotalPages(), Toast.LENGTH_SHORT).show();
+			Toast.makeText(getApplicationContext(), "Page " + mPage + " of " + SearchServie.getInstance().getTotalPages(), Toast.LENGTH_SHORT).show();
 			if(SearchServie.getInstance().getTotalPages() > mPage){
 				findViewById(R.id.next).setVisibility(View.VISIBLE);
 			}
@@ -362,7 +391,7 @@ public class MapScreen extends MapActivity  {
         		Toast.makeText(getApplicationContext(), R.string.no_connection, Toast.LENGTH_LONG).show();
 			}
         	else if (msg.what == -2){
-        		Toast.makeText(getApplicationContext(), "Avbruten sökning", Toast.LENGTH_LONG).show();
+        		Toast.makeText(getApplicationContext(), "Search canceled", Toast.LENGTH_LONG).show();
         	}
         	else
         	{
@@ -410,7 +439,7 @@ public class MapScreen extends MapActivity  {
         }
        
         public void run() {
-        	int gotData = SearchServie.getInstance().search("",false,false,"","",mCoordinates);
+        	int gotData = SearchServie.getInstance().search(mQuery,false,false,"","",mCoordinates);
         	mHandler.sendEmptyMessage(gotData);       	
         }
     }

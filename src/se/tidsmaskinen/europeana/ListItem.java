@@ -1,29 +1,24 @@
 package se.tidsmaskinen.europeana;
 
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
-
+import se.tidsmaskinen.utils.ImageUtils;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-
 import com.google.android.maps.GeoPoint;
 
 public class ListItem 
 {
-	private String mTitle = "-";
+	private String mTitle = "-No headline-";
 	private String mThumbnailURL;
 	private Bitmap mThumbnail = null;
 	private List<String> mImages = new ArrayList<String>();
 	private String mDescription;
+	private String mByLine;
 	private String mType;
 	private String mIdLabel;
-	private String mTimeLabel;
-	private String mPlaceLabel;
-	private String mOrganization;
+	private String mTimeLabel = "Date was not specified.";
+	private String mPlaceLabel = "This object has no specified location associated with it.";
+	private String mOrganization = "No organization hase been specified for this object.";
 	private String mLink;
 	
 	private Double mLongitude;
@@ -31,7 +26,10 @@ public class ListItem
 	
 	/** Gets and sets the items title. */
 	public String getTitle() { return mTitle; }
-	public void setTitle(String title){	this.mTitle = title.trim();}
+	public void setTitle(String title)
+	{	if (title.trim().length() > 0)
+		this.mTitle = title.trim();
+	}
 
 	/** Gets and sets the items thumbnail. */
 	public String getThumbnailURL(){ return mThumbnailURL; }
@@ -46,32 +44,8 @@ public class ListItem
 	public void setThumbnail(Bitmap thumbnail){ this.mThumbnail = thumbnail; }
 	private void setThumbnail(String thumbnailURL)
 	{ 
-        Bitmap bitmap = null;
-        InputStream in = null;      
-        URL imageUrl = null;
-        try 
-        {
-    		try 
-    		{
-    			imageUrl = new URL(thumbnailURL.replaceAll(" ", "%20"));
-    		} 
-    		catch (MalformedURLException e) 
-    		{
-    			throw new RuntimeException(e);
-    		}
-        	
-    		URLConnection connection = imageUrl.openConnection();
-    		connection.setConnectTimeout(1500);
-    		connection.setReadTimeout(1500);
-            in = connection.getInputStream();
-            bitmap = BitmapFactory.decodeStream(in);
-            in.close();
-        } 
-        catch (Exception e) 
-        {           
-        	//e.printStackTrace();
-        }
-		this.mThumbnail = bitmap; 
+	        Bitmap bitmap = ImageUtils.downloadImage(thumbnailURL);
+			this.mThumbnail = bitmap;		
 	}
 	
 	/** Gets and sets the items images. */
@@ -81,6 +55,9 @@ public class ListItem
 		if (!(image.contains("dokument")&& image.contains("http://www.fmis.raa.se/fmis/")))
 		this.mImages.add(image);
 	}
+	
+	public String getByLine(){	return mByLine;	}
+	public void setByLine(String byLine){	this.mByLine = byLine.trim();}
 
 	/** Gets and sets the items description. */
 	public String getDescription(){	return mDescription;	}
@@ -130,7 +107,14 @@ public class ListItem
 	/** Gets the items coordinates as a GeoPoint. */
 	public GeoPoint getCoordinates() 
 	{ 
-		return new GeoPoint((int)(mLatitude*1e6), (int)(mLongitude*1e6)); 
+		if (mLatitude != null)
+		{
+			return new GeoPoint((int)(mLatitude*1e6), (int)(mLongitude*1e6)); 
+		}
+		else
+		{
+			return new GeoPoint((int)(0*1e6), (int)(0*1e6)); 
+		}
 	}	
 	
 }

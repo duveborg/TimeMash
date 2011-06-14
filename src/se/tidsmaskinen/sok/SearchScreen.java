@@ -1,22 +1,29 @@
 package se.tidsmaskinen.sok;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import se.tidsmaskinen.europeana.ListItem;
 import se.tidsmaskinen.europeana.ListViewAdapter;
 import se.tidsmaskinen.europeana.SearchServie;
+import se.tidsmaskinen.map.MapScreen;
 
 import se.android.R;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.DialogInterface.OnCancelListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,9 +58,15 @@ public class SearchScreen extends Activity
 				if(!"".equals(searchText.getText().toString()))
 				{
 					mQuery = searchText.getText().toString();
-		            mProgressDialog = new ProgressDialog(SearchScreen.this);
-		            mProgressDialog.setMessage("Laddar...");
-
+		            mProgressDialog = ProgressDialog.show(SearchScreen.this, "Please wait...", "Loading...", true , true, onSearchCancel);
+		            
+					InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+					mgr.hideSoftInputFromWindow(searchText.getWindowToken(), 0);
+		    		
+		    		findViewById(R.id.arrowNext).setVisibility(8);
+		    		findViewById(R.id.arrowPre).setVisibility(8);
+		            mPage = 1;
+		            
 		            mSearchThread = new SearchThread(handler);
 					mProgressDialog.show();
 					mSearchThread.start();
@@ -67,8 +80,7 @@ public class SearchScreen extends Activity
 				if (mPage > 1)
 				{
 					mPage --;
-		            mProgressDialog = new ProgressDialog(SearchScreen.this);
-		            mProgressDialog.setMessage("Laddar...");
+					mProgressDialog = ProgressDialog.show(SearchScreen.this, "Please wait...", "Loading...", true , true, onSearchCancel);
 		            mProgressDialog.show();
 		            mProgressThread = new ProgressThread(handler);
 					mProgressThread.start();
@@ -85,8 +97,7 @@ public class SearchScreen extends Activity
 				if (mPage < service.getTotalPages())
 				{
 					mPage ++;
-					mProgressDialog = new ProgressDialog(SearchScreen.this);
-					mProgressDialog.setMessage("Laddar...");
+					mProgressDialog = ProgressDialog.show(SearchScreen.this, "Please wait...", "Loading...", true , true, onSearchCancel);
 					mProgressDialog.show();
 					mProgressThread = new ProgressThread(handler);
 					mProgressThread.start();
@@ -100,6 +111,13 @@ public class SearchScreen extends Activity
 		}
 	};
 	
+	private OnCancelListener onSearchCancel = new OnCancelListener() {
+		@Override
+		public void onCancel(DialogInterface dialog) {
+			SearchServie.getInstance().cancelSearch();
+		}
+	};
+	
 	/**
 	 * Makes an list view from the search results to be displayed to the user. 
 	 */
@@ -109,7 +127,23 @@ public class SearchScreen extends Activity
 		ListView list = (ListView) findViewById(R.id.list);
 		list.setAdapter(new ListViewAdapter(this, items));
 		
-		Toast.makeText(getApplicationContext(), "Sida " + mPage + " av " + SearchServie.getInstance().getTotalPages(), Toast.LENGTH_SHORT).show();
+		Toast.makeText(getApplicationContext(), "Page " + mPage + " of " + SearchServie.getInstance().getTotalPages(), Toast.LENGTH_SHORT).show();
+		if(SearchServie.getInstance().getTotalPages() > mPage)
+		{
+			findViewById(R.id.arrowNext).setVisibility(0);
+		}
+		else
+		{
+			findViewById(R.id.arrowNext).setVisibility(8);
+		}
+		if(mPage != 1)
+		{
+			findViewById(R.id.arrowPre).setVisibility(0);
+		}
+		else
+		{
+			findViewById(R.id.arrowPre).setVisibility(8);
+		}
 		mButtonLock = false;
 	}
 	
@@ -120,13 +154,22 @@ public class SearchScreen extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.list);
 		
-		Button submitButton = (Button) findViewById(R.id.submitButton);
+		ImageButton submitButton = (ImageButton) findViewById(R.id.submitButton);
 		submitButton.setOnClickListener(onClickListener);
+		
+		ImageButton backButton = (ImageButton) findViewById(R.id.back_to_map);
+		backButton.setOnClickListener(toMapListener);
 		//loadData();
 				
 		findViewById(R.id.arrowPre).setOnClickListener(onClickListener);
 		findViewById(R.id.arrowNext).setOnClickListener(onClickListener);
 	}
+	
+    private OnClickListener toMapListener = new OnClickListener() {
+        public void onClick(View v) {
+        	SearchScreen.this.finish();
+        }
+    };
 	
     /** 
      * Define the Handler that receives messages from the nested thread and 
@@ -144,7 +187,7 @@ public class SearchScreen extends Activity
 			}
         	else if (msg.what == -1)
         	{
-        		Toast.makeText(getApplicationContext(), "Ingen kontakt med servern.\nKontrollera ditt nät och var god försök igen.", 3000).show();
+        		Toast.makeText(getApplicationContext(), "No contact with server. \nPlease check your network and please try again.", 3000).show();
         		mButtonLock = false;
         	}
         	mProgressDialog.dismiss();

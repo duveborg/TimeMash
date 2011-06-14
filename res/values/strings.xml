@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Tidsmaskinen</string>
-    <string name="no_connection">Ingen anslutning till nätet</string>
-    <string name="no_results">Inga träffar i området</string>
-    <string name="no_gps">Det finns ingen position</string>
-    <string name="map_key">0qeCGjX1f2fV4Mc-ssdWrNU0eKOER7CmydwpK-w</string>
-    <string name="app_info">Tanken är att man ska ta bilder med telefonen från samma ställe där ursprungsbilden togs. Det finns några tusen bilder spridda över hela landet. Alla bilder som laddas upp visas även på http://resitiden.appspot.com. Bilder/info hämtas från Riksantikvarieämbetets API ksamsök(ksamsok.se).  </string>
-    <string name="author_info">Appen är skapad av Martin Duveborg (duveborg@gmail.com).</string>
+    <string name="app_name">TimeMash</string>
+    <string name="no_connection">No network connection</string>
+    <string name="no_results">No hits/results in the area</string>
+    <string name="no_gps">Could not locate your position</string>
+    <string name="debug_map_key">0qeCGjX1f2fV4Mc-ssdWrNU0eKOER7CmydwpK-w</string>
+    <string name="map_key">0qeCGjX1f2fUoDzYWOiOHZNRFrADR1bxABpYuPQ</string>
+    <string name="app_info">The idea is that you should take pictures with your phone from the same place where the original picture was taken. There are a more then ten thousand images spread throughout the continent. All images uploaded are also displayed on http://updateculture.appspot.com.</string>
+    <string name="author_info">This app is a collaboration project between Martin Duveborg and Jonas Bolin for the contest Hack4Europe in Strockholm 2011.</string>
 </resources>

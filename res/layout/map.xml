@@ -19,6 +19,11 @@
     android:paddingBottom="1.0dip" android:layout_width="fill_parent"
     android:layout_height="wrap_content" android:layout_below="@+id/TextView01">
    
+    <TableLayout android:id="@+id/TableLayout01" android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:stretchColumns="1" android:paddingLeft="5px" android:paddingTop="5px" android:paddingRight="5px">
+		<TableRow android:layout_width="fill_parent"
+			android:layout_height="45dp" android:orientation="vertical" android:gravity="bottom">
+   
 	<ImageView android:id="@+id/previous"
 		android:layout_width="28dp"
 		android:layout_height="45dp"
@@ -27,17 +32,27 @@
 		android:scaleType="fitCenter"
 		android:layout_alignParentLeft="true"
 		android:layout_centerVertical="true"
-		android:visibility="invisible"
+		android:visibility="gone"
 		android:src="@drawable/pre"
 		/>
 		
+	<EditText android:id="@+id/search_text"
+		android:layout_width="fill_parent" android:layout_height="fill_parent"
+		android:textSize="18sp" android:singleLine="true">
+	</EditText>		
     
-    <Button android:id="@+id/search_btn" android:layout_width="0.0dip"
-        android:layout_height="fill_parent" android:text="Sök"
-        android:layout_weight="1.0" />
-    <Button android:id="@+id/updatePosition_btn" android:layout_width="0.0dip"
-        android:layout_height="fill_parent" android:text="Positionera"
-        android:layout_weight="1.0" />
+    <ImageButton android:id="@+id/search_btn" android:layout_width="50dp"
+		android:layout_height="50dp" android:src="@drawable/search"
+        />
+        
+    <ImageButton android:id="@+id/updatePosition_btn" android:layout_width="50dp"
+		android:layout_height="50dp" android:src="@drawable/compass"
+        />
+			
+	<ImageButton android:id="@+id/to_list"
+		android:src="@drawable/list"
+		android:layout_width="50dp"
+		android:layout_height="50dp"/>
         
         
 	<ImageView android:id="@+id/next"
@@ -48,10 +63,11 @@
 		android:scaleType="fitCenter"
 		android:layout_alignParentRight="true"
 		android:layout_centerVertical="true"
-		android:visibility="invisible"
+		android:visibility="gone"
 		android:src="@drawable/next"
 		/>
-      
+	</TableRow>
+  </TableLayout>    
 </LinearLayout>
 		
 		

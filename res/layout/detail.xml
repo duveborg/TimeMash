@@ -20,7 +20,7 @@
 			android:layout_height="wrap_content" android:visibility="gone"
 			android:paddingBottom="9dp">
 
-			<TextView android:paddingLeft="5dp" android:text="Din bild:"
+			<TextView android:paddingLeft="5dp" android:text="Your image:"
 				android:textSize="12sp" android:textStyle="bold" android:textColor="#000000"
 				android:layout_width="fill_parent" android:layout_height="wrap_content" />
 
@@ -29,7 +29,7 @@
 				android:adjustViewBounds="true" android:layout_marginBottom="5dp" />
 
 			<Button android:paddingTop="5dp" android:id="@+id/uploadBtn"
-				android:text="Ladda upp bild" android:layout_width="180dp" android:layout_gravity="center_horizontal"
+				android:text="Upload image" android:layout_width="180dp" android:layout_gravity="center_horizontal"
 				android:layout_height="wrap_content" />
 
 
@@ -46,7 +46,7 @@
 
 
 		<TextView android:padding="5dp" android:id="@+id/no_images_text"
-			android:text="Det finns inga uppladdade bilder" android:textSize="12sp"
+			android:text="There are no uploaded images" android:textSize="12sp"
 			android:textStyle="bold" android:textColor="#000000"
 			android:layout_width="fill_parent" android:layout_height="wrap_content" 
 			android:gravity="center_horizontal" android:visibility="gone"/>
@@ -59,7 +59,7 @@
 			android:layout_height="wrap_content" android:visibility="gone"
 			android:layout_marginBottom="5dp">
 
-			<TextView android:id="@+id/today_txt" android:text="Tidigare uppladdade bilder:"
+			<TextView android:id="@+id/today_txt" android:text="Previously uploaded images:"
 				android:paddingLeft="5dp" android:textSize="12sp" android:textStyle="bold"
 				android:textColor="#000000" android:layout_width="fill_parent"
 				android:layout_height="wrap_content" />
@@ -71,7 +71,7 @@
 		</LinearLayout>
 
 		<Button android:paddingTop="9dp" android:paddingBottom="9dp"
-			android:id="@+id/goToCameraBtn" android:text="Ta ny bild"
+			android:id="@+id/goToCameraBtn" android:text="Capture new image"
 		 android:layout_height="wrap_content" 
 			android:layout_width="180dp" android:layout_gravity="center_horizontal"/>
 
@@ -82,7 +82,7 @@
 			android:padding="5dp">
 
 
-			<TextView android:text="Beskrivning:" android:textSize="12sp"
+			<TextView android:text="Description:" android:textSize="12sp"
 				android:textStyle="bold" android:textColor="#000000"
 				android:layout_width="fill_parent" android:layout_height="wrap_content" />
 			<TextView android:id="@+id/description"
@@ -91,7 +91,7 @@
 				android:text="Anmärkning: VISBY RINGMUR" />
 
 
-			<TextView android:text="Plats:" android:textSize="12sp"
+			<TextView android:text="Location:" android:textSize="12sp"
 				android:textStyle="bold" android:textColor="#000000"
 				android:layout_width="fill_parent" android:layout_height="wrap_content" />
 			<TextView android:id="@+id/place" android:layout_width="fill_parent"
@@ -99,14 +99,14 @@
 				android:textColor="#000000" android:text="Gotland, Visby" />
 
 
-			<TextView android:text="Källa:" android:textSize="12sp"
+			<TextView android:text="Source:" android:textSize="12sp"
 				android:textStyle="bold" android:textColor="#000000"
 				android:layout_width="fill_parent" android:layout_height="wrap_content" />
 			<TextView android:id="@+id/organization"
 				android:layout_width="fill_parent" android:layout_height="wrap_content"
 				android:textSize="12sp" android:textColor="#000000" android:text="Västergötlands museum" />
 
-			<TextView android:text="Källan:" android:textSize="12sp"
+			<TextView android:text="Link to source:" android:textSize="12sp"
 				android:textStyle="bold" android:textColor="#000000"
 				android:layout_width="fill_parent" android:layout_height="wrap_content" />
 

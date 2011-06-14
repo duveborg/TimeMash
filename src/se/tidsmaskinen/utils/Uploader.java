@@ -21,6 +21,8 @@ import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
+import se.tidsmaskinen.europeana.ListItem;
+
 import android.util.Log;
 
 
@@ -28,15 +30,19 @@ import android.util.Log;
 public class Uploader {
 	
 	
-	public static final String SERVER_BASE_URL = "http://resitiden.appspot.com";
-	//public static final String SERVER_BASE_URL = "http://192.168.1.71:9000";
+	public static final String SERVER_BASE_URL = "http://updateculture.appspot.com";
+	//public static final String SERVER_BASE_URL = "http://130.242.9.254:9000";
 	
 	public static HttpClient httpPostClient;
 	
 	/**
 	 * Returns the id of the uploaded image, or -1 if fail
 	 */
-	public static Long upload(File image, String user, String objectid, String coordinates) throws ParseException, IOException{
+	public static Long upload(File image, 
+			String user, 
+			ListItem content,
+			String imageLongitude, 
+			String imageLatitude) throws ParseException, IOException{
 	
 		 Long result = -1L;
 		
@@ -47,10 +53,35 @@ public class Uploader {
 	     FileBody bin = new FileBody(image);
 	     MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);  
 	     
+	     
+	     reqEntity.addPart("object.objectUri", new StringBody(content.getLink()));
+	     
+	     reqEntity.addPart("object.originalThumbnailUrl", new StringBody(content.getThumbnailURL()));
+	    
+	     if(content.getImages().size() > 0)
+	    	 reqEntity.addPart("object.originalImageUrl", new StringBody(content.getImages().get(0)));
+	     
+	     if(content.getTimeLabel() != null)
+	    	 reqEntity.addPart("object.originalDate", new StringBody(content.getTimeLabel()));
+	     
+	     if(content.getDescription() != null)
+	    	 reqEntity.addPart("object.description", new StringBody(content.getDescription()));
+	     
+	     if(content.getByLine() != null)
+	    	 reqEntity.addPart("object.imageByline", new StringBody(content.getByLine()));
+	     
+	     if(content.getTitle() != null)
+	    	 reqEntity.addPart("object.label", new StringBody(content.getTitle()));
+	     
+	     reqEntity.addPart("object.longitude", new StringBody((content.getCoordinates().getLongitudeE6() / 1e6) + ""));
+	     reqEntity.addPart("object.latitude", new StringBody((content.getCoordinates().getLatitudeE6() / 1e6) + ""));
+	     
 	     reqEntity.addPart("imageBytes", bin);
-	     reqEntity.addPart("uploadedBy", new StringBody(user));
-	     reqEntity.addPart("objectId", new StringBody(objectid));
-	     reqEntity.addPart("coordinates", new StringBody(coordinates));
+	     reqEntity.addPart("image.savedBy", new StringBody(user));
+	     if(imageLatitude != null && imageLongitude != null){
+	    	 reqEntity.addPart("image.latitude", new StringBody(imageLatitude));
+	     	 reqEntity.addPart("image.longitude", new StringBody(imageLongitude));
+	     }
 	     
 	     post.setEntity(reqEntity);  
 	  

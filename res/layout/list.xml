@@ -28,13 +28,22 @@
 				android:visibility="gone"
 				android:src="@drawable/pre"
 				/>
+				
 			<EditText android:id="@+id/search_text"
 				android:layout_width="fill_parent" android:layout_height="fill_parent"
 				android:textSize="18sp" android:singleLine="true">
 			</EditText>
-			<Button android:id="@+id/submitButton"
-				android:text="Sök" android:layout_width="50dp"
-				android:layout_height="fill_parent" />
+			
+			<ImageButton android:id="@+id/submitButton"
+				android:src="@drawable/search"
+				android:layout_width="50dp"
+				android:layout_height="50dp" />
+			
+			<ImageButton android:id="@+id/back_to_map"
+				android:src="@drawable/mapmode"
+				android:layout_width="50dp"
+				android:layout_height="50dp"/>
+				
 			<ImageView android:id="@+id/arrowNext"
 				android:layout_width="28dp"
 				android:layout_height="45dp"
@@ -51,8 +60,8 @@
 		<ListView 
 		android:id="@+id/list"
 		android:layout_width="fill_parent"
-		android:layout_height="325dp"
-		android:minHeight="325dp"
+		android:layout_height="435dp"
+		android:minHeight="435dp"
 		android:drawSelectorOnTop="false"
 		android:background="#ffffff"
 		android:cacheColorHint="#ffffff"

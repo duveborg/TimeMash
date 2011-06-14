@@ -37,77 +37,21 @@ public class SearchServie
 	 * @return -1 for error 0 for no data, and 1 for when the search was a success.
 	 */
 	public int search(String query, boolean withImages, boolean libris, String type, String milieu, String coordinates)
-	{		
-		/*
-		Boolean isFirst = true;
-		
-	    if(!"".equals(query))
-		{	
-	    	mQuery = "&query=text%3D";
-	    	mQuery += "%22" +query.trim().replaceAll(" ", "%22+and+%22") +"%22";
-	    	isFirst = false;
-		}
-	    else
-	    {
-	    	mQuery = "&query=";
-	    }
-			    
-		if (milieu.equals("Byggnader"))
-		{ 
-			if (!isFirst){ mQuery+="+and+"; }else{ isFirst = false; } 
-			mQuery += "%22bbrb%22"; 
-		}
-		if (milieu.equals("Fornlämningar"))
-		{ 
-			if (!isFirst){ mQuery+="+and+"; }else{ isFirst = false; }
-			mQuery += "%22fmi%22"; 
-		}
-				
-		if(withImages)
-		{	
-			if (!isFirst){ mQuery+="+and+"; }else{ isFirst = false; }
-			mQuery += "thumbnailExists=j"; 
-		}
-		
-		if (coordinates != null)
-		{ 
-			if (!isFirst){ mQuery+="+and+"; }else{ isFirst = false; }
-			mQuery+= "boundingBox=/WGS84+" +coordinates;  
-		}
-		
-		if(type.equals("Foto"))
-		{ 
-			if (!isFirst){ mQuery+="+and+"; }else{ isFirst = false; }
-			mQuery += "itemType=%22foto%22"; 
-		}
-		if(type.equals("Föremål"))
-		{	
-			if (!isFirst){ mQuery+="+and+"; }else{ isFirst = false; }
-			mQuery += "itemType=%22objekt/f%C3%B6rem%C3%A5l%22"; 
-		}
-		if(type.equals("Platser"))
-		{	
-			if (!isFirst){ mQuery+="+and+"; }else{ isFirst = false; }
-			mQuery += "+itemType=%22milj%C3%B6%22"; 
-		}
-		
-		if(!libris){	mQuery += "+not+serviceOrganization=LIBRIS"; }
-		
-		XMLPull xmlPull = new XMLPull(BASE_URL+SIZE+SELECTION_SIZE+API_KEY+mQuery);
-		*/
+	{	
 		searchCanceled = false;
 		Boolean isFirst = true;		
 		mQuery = "";
 		
 	    if(query.length() != 0)
 		{	
-	    	mQuery = query;
+	    	mQuery = "\"" +query +"\"";
+	    	mQuery = mQuery.replaceAll(" ", "+");
 	    	isFirst = false;
 		}
 		
 		if (coordinates != null)
 		{ 
-			if (!isFirst){ mQuery+="&"; }else{ isFirst = false; }
+			if (!isFirst){ mQuery+="+"; }else{ isFirst = false; }
 			mQuery+= coordinates;  
 		}
 		

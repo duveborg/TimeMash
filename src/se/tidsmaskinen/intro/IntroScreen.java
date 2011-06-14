@@ -2,6 +2,7 @@ package se.tidsmaskinen.intro;
 
 import se.android.R;
 import se.tidsmaskinen.map.MapScreen;
+import se.tidsmaskinen.sok.SearchScreen;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +15,6 @@ public class IntroScreen extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-
 		
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, 
